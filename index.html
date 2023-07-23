@@ -7,12 +7,11 @@
         <p id="message-el">Want to play a round?</p>
         <p id="dealer-el"></p>
         <p id="player-el"></p>
-        <audio id="servingAudio" autoplay="false"></audio>
         <source src="serve.mp3" type="audio/mpeg">
-        <button id="start-btn" onclick="startGame()">START GAME</button>
+        <button id="start-btn" onclick="initial_dealing()">START GAME</button>
         <div class="playingBtn">
-        <button  id="hit-btn" onclick="Hit()">HIT</button>
-        <button  id="stand-btn" onclick="Stand()">STAND</button>
+        <button  id="hit-btn" onclick="hit()">HIT</button>
+        <button  id="stand-btn" onclick="stand()">STAND</button>
         </div>
         <script src="index.js"></script>
     </body>
