@@ -53,29 +53,29 @@ async function reset(arg){
 
 async function initial_dealing() {
     startBtn.style.display = "none";
-    loading("dealing the facedown card")
-    //await delay(1800)
+    loading("Dealing the facedown card")
+    await delay(1800)
     dealerEl.textContent="Dealer's hand: "+"x" 
-    //await delay(2000)
-    loading("dealing to the player's first card")
-    //await delay(1800)
+    await delay(2000)
+    loading("Dealing to the player's first card")
+    await delay(1800)
     playerEl.textContent="Your hand: "+playerCards[0]
-    //await delay(2000)
-    loading("dealing the faceup dealer card and revealing facedown card")
-    //await delay(1800)
+    await delay(2000)
+    loading("Dealing the faceup dealer card and revealing facedown card")
+    await delay(1800)
     dealerEl.textContent="Dealer's hand: "+"x"+"-"+dealerCards[1]
-    //await delay(1000)
+    await delay(1000)
     let initialD="Dealer's hand: "+dealerCards[0]+"-"+dealerCards[1]
     dealerEl.textContent=initialD
-    //await delay(2000)
-    loading("dealing the player's second card")
-    //await delay(1800)
+    await delay(2000)
+    loading("Dealing the player's second card")
+    await delay(1800)
     let initialP="Your hand: "+playerCards[0]+"-"+playerCards[1]
     playerEl.textContent=initialP
     hitBtn.style.display = "block";
     standBtn.style.display = "block";
     waiting.play();
-    //await delay(1200)
+    await delay(1200)
     messageEl.textContent="Hit or Stand"
     if (blackjackP===true){
 
@@ -83,13 +83,13 @@ async function initial_dealing() {
     }
     else if (blackjackD===true){
         
-        reset("the dealer CRUSHED you with a blackjack"+" "+dealerEl.textContent)
+        reset("The dealer CRUSHED you with a blackjack"+" "+dealerEl.textContent)
     }   
 }
 
 
 async function hit() {
-    messageEl.textContent="you chose hit"
+    messageEl.textContent="You chose hit"
     await delay(1800)
     serving.play();
     console.log(currentP)
@@ -100,14 +100,14 @@ async function hit() {
     console.log(sum)
 }
  if (sum===21){
-    messageEl.textContent="hey check your cards"
+    messageEl.textContent="Hey check your cards"
     await delay(1000)
-    return reset("you have won by having a perfect 21"+" "+playerEl.textContent) }
+    return reset("You have won by having a perfect 21"+" "+playerEl.textContent) }
 
 else if (sum>21){
-    messageEl.textContent="check your cards"
+    messageEl.textContent="Check your cards"
     await delay(1000)
-    return reset("you BUSTED . the sum is over 21:("+" "+playerEl.textContent)}
+    return reset("You BUSTED . the sum is over 21:("+" "+playerEl.textContent)}
 
 else if (currentP===3 && sum<21) {
     await delay(200)
