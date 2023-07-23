@@ -89,6 +89,9 @@ async function initial_dealing() {
 
 
 async function hit() {
+    messageEl.textContent="you chose hit"
+    await delay(1800)
+    serving.play();
     console.log(currentP)
  playerEl.textContent=playerEl.textContent+"-"+playerCards[currentP]
  let sum=0
@@ -117,4 +120,64 @@ return currentP
 
 
 
-//function stand() {}
+async function stand() {
+    messageEl.textContent = "You chose to stand"
+    await delay(3000)
+    messageEl.textContent = "It's time for the dealer to play"
+    console.log(currentD)
+  
+    let Psum = 0
+    for (let i = 0; i < currentP; i++) {
+      Psum += playerCards[i]
+      console.log(Psum)
+    }
+  
+    let Dsum = 0
+    for (let i = 0; i < currentD; i++) {
+      Dsum += dealerCards[i]
+      console.log(Dsum)
+    }
+  
+    if (Dsum >= 17) {
+      messageEl.textContent = "Dealer chose to stand";
+      if (Dsum > Psum) {
+        await delay(2000)
+        return reset("The dealer pulled more than you. You lost.\n" + dealerEl.textContent + "\n" + playerEl.textContent)
+      } else if (Dsum < Psum) {
+        await delay(2000)
+        return reset("Congratulations! You beat the dealer.\n" + dealerEl.textContent + "\n" + playerEl.textContent)
+      } else {
+        await delay(2000)
+        return reset("Push. (Push is a tie)\n" + dealerEl.textContent + "\n" + playerEl.textContent)
+      }
+    } else {
+      while (Dsum < 17 && currentD <= 3) {
+        messageEl.textContent = "Dealer chose to hit"
+        serving.play()
+        await delay(1800)
+        Dsum += dealerCards[currentD]
+        console.log(Dsum)
+        dealerEl.textContent = dealerEl.textContent + "-" + dealerCards[currentD]
+        currentD++
+      }
+      if (Dsum > 21) {
+        await delay(1000);
+        return reset("The dealer BUSTED... You win!\n" + dealerEl.textContent);
+      } else if (currentD === 4) {
+        await delay(1000);
+        return reset("The dealer played 4 times... You lose.\n" + dealerEl.textContent);
+      } else {
+        if (Dsum > Psum) {
+          await delay(2000);
+          return reset("The dealer pulled more than you. You lost.\n" + dealerEl.textContent + "\n" + playerEl.textContent);
+        } else if (Dsum < Psum) {
+          await delay(2000);
+          return reset("Congratulations! You beat the dealer.\n" + dealerEl.textContent + "\n" + playerEl.textContent);
+        } else {
+          await delay(2000);
+          return reset("Push. (Push is a tie)\n" + dealerEl.textContent + "\n" + playerEl.textContent);
+        }
+      }
+    }
+  }
+  
