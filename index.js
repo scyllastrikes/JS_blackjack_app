@@ -1,14 +1,19 @@
-let firstCard = 10
-let secondCard = 4
-let sum = firstCard + secondCard
 let hasBlackJack = false
 let isAlive = true
 let message = ""
 let messageEl = document.getElementById("message-el")
 let sumEl = document.getElementById("sum-el")
 let cardsEl = document.getElementById("cards-el")
-
+let randomNumber = Math.floor(Math.random() * 11) + 1
+let startBtn= document.getElementById("start-btn")
+let hitBtn= document.getElementById("hit-btn")
+let standBtn= document.getElementById("stand-btn")
+hitBtn.style.display = "none";
+standBtn.style.display = "none";
 function startGame() {
+    startBtn.style.display = "none";
+    hitBtn.style.display = "block";
+standBtn.style.display = "block";
     cardsEl.textContent = "Cards: " + firstCard + " " + secondCard
     sumEl.textContent = "Sum: " + sum
     if (sum <= 20) {

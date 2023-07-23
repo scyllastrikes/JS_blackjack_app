@@ -5,10 +5,13 @@
     <body>
         <h1>Blackjack</h1>
         <p id="message-el">Want to play a round?</p>
-        <p id="cards-el">Cards:</p>
-        <p id="sum-el">Sum:</p>
-        <button onclick="startGame()">START GAME</button>
-        <!-- 1. Create a NEW CARD button, make it run newCard() on click -->
+        <p id="cards-el"></p>
+        <p id="sum-el"></p>
+        <button id="start-btn" onclick="startGame()">START GAME</button>
+        <div class="playingBtn">
+        <button  id="hit-btn" onclick="Hit()">HIT</button>
+        <button  id="stand-btn" onclick="Stand()">STAND</button>
+        </div>
         <script src="index.js"></script>
     </body>
 </html>

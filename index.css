@@ -6,7 +6,9 @@ body {
     color: white;
     text-align: center;
 }
-
+.playingBtn{
+    display: inline-block;
+}
 h1 {
     color: goldenrod;
 }
@@ -14,7 +16,9 @@ h1 {
 #message-el {
     font-style: italic;
 }
-
+#hit-btn {
+    margin-bottom: 20px;
+}
 /* 3. Make sure that the two buttons have some space between
 each other when they are rendered out vertically */
 button {
