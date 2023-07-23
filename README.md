@@ -1,4 +1,4 @@
-# MY WEBAPP CASINO
+# MY Blackjack APP
 
 Quick start:
 
