@@ -15,3 +15,8 @@ i was following a scrimba course (https://scrimba.com/allcourses) and i decided 
 - this is my 2nd project so far and i am happy with how this is going so far
 - Contact me anytime if there is any queries about the code
 - Happy coding !!!
+
+
+Credits :
+- Scrimba for the free photo and some css and the start in JS
+- My little brother for capitalising the first letters of each srntence . 
