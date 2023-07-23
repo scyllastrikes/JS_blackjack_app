@@ -5,8 +5,10 @@
     <body>
         <h1>Blackjack</h1>
         <p id="message-el">Want to play a round?</p>
-        <p id="cards-el"></p>
-        <p id="sum-el"></p>
+        <p id="dealer-el"></p>
+        <p id="player-el"></p>
+        <audio id="servingAudio" autoplay="false"></audio>
+        <source src="serve.mp3" type="audio/mpeg">
         <button id="start-btn" onclick="startGame()">START GAME</button>
         <div class="playingBtn">
         <button  id="hit-btn" onclick="Hit()">HIT</button>
