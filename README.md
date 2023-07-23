@@ -4,7 +4,7 @@ Quick start:
 
 ```
 install liveserver
-download as zip
+download <> code  as zip
 RUN IT
 enjoy ;) 
 ````
