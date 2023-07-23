@@ -14,14 +14,18 @@ hitBtn.style.display = "none";
 standBtn.style.display = "none";
 let dealerCards=[]
 let playerCards=[]
-
-
+let currentP=2
+let currentD=2
 for (let i = 0; i < 4; i++){
     dealerCards.push(Math.floor(Math.random() * 11) + 1)
     playerCards.push(Math.floor(Math.random() * 11) + 1)
     }
 let blackjackD=(dealerCards[0]+dealerCards[1]===21)
 let blackjackP=(playerCards[0]+playerCards[1]===21)
+
+function restart(){
+    location.reload()
+}
 
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -50,60 +54,62 @@ async function reset(arg){
 async function initial_dealing() {
     startBtn.style.display = "none";
     loading("dealing the facedown card")
-    await delay(1800)
+    //await delay(1800)
     dealerEl.textContent="Dealer's hand: "+"x" 
-    await delay(2000)
+    //await delay(2000)
     loading("dealing to the player's first card")
-    await delay(1800)
-    playerEl.textContent="Player's hand: "+playerCards[0]
-    await delay(2000)
+    //await delay(1800)
+    playerEl.textContent="Your hand: "+playerCards[0]
+    //await delay(2000)
     loading("dealing the faceup dealer card and revealing facedown card")
-    await delay(1800)
+    //await delay(1800)
     dealerEl.textContent="Dealer's hand: "+"x"+"-"+dealerCards[1]
-    await delay(1000)
+    //await delay(1000)
     let initialD="Dealer's hand: "+dealerCards[0]+"-"+dealerCards[1]
     dealerEl.textContent=initialD
-    await delay(2000)
+    //await delay(2000)
     loading("dealing the player's second card")
-    await delay(1800)
-    let initialP="player's hand: "+playerCards[0]+"-"+playerCards[1]
+    //await delay(1800)
+    let initialP="Your hand: "+playerCards[0]+"-"+playerCards[1]
     playerEl.textContent=initialP
     hitBtn.style.display = "block";
     standBtn.style.display = "block";
     waiting.play();
-    await delay(1200)
+    //await delay(1200)
     messageEl.textContent="Hit or Stand"
     if (blackjackP===true){
 
-        reset("WOW you win via blackjack")
+        reset("WOW you win via blackjack"+" "+playerEl.textContent)
     }
     else if (blackjackD===true){
         
-        reset("the dealer CRUSHED you with a blackjack")
+        reset("the dealer CRUSHED you with a blackjack"+" "+dealerEl.textContent)
     }   
-    let currentP=2
-    let currentD=2
 }
 
-async function hit(currentP) {
-console.log(currentP)
-playerEl.textContent=playerEl.textContent+playerCards[currentP]
-for (let i = 0; i < currentP+1; i++){
-        let sum=0
-        sum=sum+playerCards[i]}
-if (sum===21){
-    messageEl.textContent="hey check your cards"
 
-    await delay(3000)
-    reset("you have won by having a perfect 21") }
+async function hit() {
+    console.log(currentP)
+ playerEl.textContent=playerEl.textContent+"-"+playerCards[currentP]
+ let sum=0
+ for (let i = 0; i < currentP+1; i++){
+    sum=sum+playerCards[i]
+    console.log(sum)
+}
+ if (sum===21){
+    messageEl.textContent="hey check your cards"
+    await delay(1000)
+    return reset("you have won by having a perfect 21"+" "+playerEl.textContent) }
+
 else if (sum>21){
     messageEl.textContent="check your cards"
-    await delay(3000)
-    reset("you BUSTED . the sum is over 21:(")}
-else if (currentP===4){
-    messageEl.textContent="check your cards"
-    await delay(3000)
-    reset("GRATS !!! you win by having 4 cards")}
+    await delay(1000)
+    return reset("you BUSTED . the sum is over 21:("+" "+playerEl.textContent)}
+
+else if (currentP===3 && sum<21) {
+    await delay(200)
+    return reset("GRATS !!! you win by having 4 cards"+" "+playerEl.textContent)}
+    
 currentP=currentP+1
 return currentP
 }
