@@ -8,7 +8,11 @@ let standBtn= document.getElementById("stand-btn")
 let restartBtn= document.getElementById("restart-btn")
 const serving = new Audio("serve.mp3");
 const waiting = new Audio("waiting.mp3");
-
+initPcounter()
+initWcounter()
+let Wrate= document.getElementById("winrate")
+Wrate.textContent="Winrate:"+winrate()
+Wrate.style.display="block"
 restartBtn.style.display = "none";
 hitBtn.style.display = "none";
 standBtn.style.display = "none";
@@ -52,6 +56,7 @@ async function reset(arg){
 }
 
 async function initial_dealing() {
+    Wrate.style.display="none"
     startBtn.style.display = "none";
     loading("Dealing the facedown card")
     await delay(1800)
@@ -78,11 +83,11 @@ async function initial_dealing() {
     await delay(1200)
     messageEl.textContent="Hit or Stand"
     if (blackjackP===true){
-
+        win()
         reset("WOW you win via blackjack"+" "+playerEl.textContent)
     }
     else if (blackjackD===true){
-        
+        loose()
         reset("The dealer CRUSHED you with a blackjack"+" "+dealerEl.textContent)
     }   
 }
@@ -102,15 +107,18 @@ async function hit() {
  if (sum===21){
     messageEl.textContent="Hey check your cards"
     await delay(1000)
+    win()
     return reset("You have won by having a perfect 21"+" "+playerEl.textContent) }
 
 else if (sum>21){
     messageEl.textContent="Check your cards"
     await delay(1000)
+    loose()
     return reset("You BUSTED . the sum is over 21:("+" "+playerEl.textContent)}
 
 else if (currentP===3 && sum<21) {
     await delay(200)
+    win()
     return reset("GRATS !!! you win by having 4 cards"+" "+playerEl.textContent)}
     
 currentP=currentP+1
@@ -142,13 +150,20 @@ async function stand() {
       messageEl.textContent = "Dealer chose to stand";
       if (Dsum > Psum) {
         await delay(2000)
-        return reset("The dealer pulled more than you. You lost.\n" + dealerEl.textContent + "\n" + playerEl.textContent)
+        loose()
+        return reset(`The dealer pulled more than you. You lost.
+                    ${dealerEl.textContent}
+                    ${ playerEl.textContent}`)
       } else if (Dsum < Psum) {
-        await delay(2000)
-        return reset("Congratulations! You beat the dealer.\n" + dealerEl.textContent + "\n" + playerEl.textContent)
+        await delay(2000)*
+        win()
+        return reset(`Congratulations! You beat the dealer. 
+                     ${dealerEl.textContent}
+                     ${playerEl.textContent}`)
       } else {
         await delay(2000)
-        return reset("Push. (Push is a tie)\n" + dealerEl.textContent + "\n" + playerEl.textContent)
+        win()
+        return reset(`Push. (Push is a tie)${dealerEl.textContent}  ${playerEl.textContent}`)
       }
     } else {
       while (Dsum < 17 && currentD <= 3) {
@@ -162,22 +177,57 @@ async function stand() {
       }
       if (Dsum > 21) {
         await delay(1000);
+        win()
         return reset("The dealer BUSTED... You win!\n" + dealerEl.textContent);
       } else if (currentD === 4) {
         await delay(1000);
+        loose()
         return reset("The dealer played 4 times... You lose.\n" + dealerEl.textContent);
       } else {
         if (Dsum > Psum) {
           await delay(2000);
+          loose()
           return reset("The dealer pulled more than you. You lost.\n" + dealerEl.textContent + "\n" + playerEl.textContent);
         } else if (Dsum < Psum) {
           await delay(2000);
+          win()
           return reset("Congratulations! You beat the dealer.\n" + dealerEl.textContent + "\n" + playerEl.textContent);
         } else {
           await delay(2000);
+          win()
           return reset("Push. (Push is a tie)\n" + dealerEl.textContent + "\n" + playerEl.textContent);
         }
       }
     }
   }
-  
+function initWcounter(){
+  let retrievedDataW = localStorage.getItem("Wins")
+  if (retrievedDataW == null ) {
+    retrievedDataW=0
+    localStorage.setItem("Wins", retrievedDataW)
+}}
+function initPcounter(){
+  let retrievedDataP = localStorage.getItem("Plays")
+  if (retrievedDataP == null){
+    retrievedDataP=0
+    localStorage.setItem("Plays", retrievedDataP)
+  }}
+function win(){
+  let retrievedDataW = localStorage.getItem("Wins");
+  let retrievedDataP = localStorage.getItem("Plays");
+  retrievedDataP++
+  retrievedDataW++
+  localStorage.setItem("Plays",retrievedDataP)
+  localStorage.setItem("Wins",retrievedDataW)
+}
+function loose(){
+  let retrievedDataP=localStorage.getItem("Plays")
+  retrievedDataP++
+  localStorage.setItem("Plays",retrievedDataP)
+}
+function winrate(){
+  let retrievedDataW = localStorage.getItem("Wins")
+  let retrievedDataP = localStorage.getItem("Plays")
+  let filler=(retrievedDataW/retrievedDataP)*100 
+  return Math.round(filler)+"%"
+}
