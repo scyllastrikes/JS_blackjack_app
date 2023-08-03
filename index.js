@@ -6,12 +6,13 @@ const hitBtn= document.getElementById("hit-btn")
 const standBtn= document.getElementById("stand-btn")
 const restartBtn= document.getElementById("restart-btn")
 const moneyEl = document.getElementById("money-el")
+const bankruptEl = document.getElementById("bankrupt-el")
 const serving = new Audio("serve.mp3")
 const waiting = new Audio("waiting.mp3")
 const Wrate =document.getElementById("winrate")
 function initMcounter(){
   let retrievedDataM = localStorage.getItem("Money")
-  if (retrievedDataM == null ||retrievedDataM<=0) {
+  if (retrievedDataM == null) {
     retrievedDataM=500
     x=retrievedDataM
     localStorage.setItem("Money", retrievedDataM)
@@ -22,25 +23,45 @@ function initMcounter(){
     return x
   }
 }
-
+function initBcounter(){
+  let retrievedDataB = localStorage.getItem("Bankruptcies")
+  if (retrievedDataB == null){
+    retrievedDataB=0
+    localStorage.setItem("Bankruptcies", retrievedDataB)
+    return retrievedDataB
+  }
+  else {
+    x=retrievedDataB
+    return x
+  }}
 initPcounter()
 initWcounter()
 betMoney=500
+bankruptEl.textContent="Times Bankrupt: "+initBcounter()
 Wrate.textContent="Winrate: "+winrate()
 moneyEl.textContent="Current money: "+initMcounter()
 Wrate.style.display="block"
+bankruptEl.style.display="block"
 moneyEl.style.display="block"
-restartBtn.style.display = "none";
-hitBtn.style.display = "none";
-standBtn.style.display = "none";
+restartBtn.style.display = "none"
+hitBtn.style.display = "none"
+standBtn.style.display = "none"
 let dealerCards=[]
 let playerCards=[]
 let currentP=2
 let currentD=2
-for (let i = 0; i < 4; i++){
-    dealerCards.push(Math.floor(Math.random() * 11) + 1)
-    playerCards.push(Math.floor(Math.random() * 11) + 1)
-    }
+for (let i = 0; i < 4; i++) {
+  let dealerCard = Math.floor(Math.random() * 11) + 1;
+  let playerCard = Math.floor(Math.random() * 11) + 1;
+  while (dealerCards.includes(11) && dealerCard === 11) {
+      dealerCard = Math.floor(Math.random() * 11) + 1;
+  }
+  while (playerCards.includes(11) && playerCard === 11) {
+      playerCard = Math.floor(Math.random() * 11) + 1;
+  }
+  dealerCards.push(dealerCard);
+  playerCards.push(playerCard);
+}
 let blackjackD=(dealerCards[0]+dealerCards[1]===21)
 let blackjackP=(playerCards[0]+playerCards[1]===21)
 
@@ -59,12 +80,12 @@ async function loading(arg){
         await delay(300)
         messageEl.textContent=messageEl.textContent+"."
      }
-     serving.play();
+     serving.play()
 }
 async function reset(arg){
-    hitBtn.style.display = "none";
-    standBtn.style.display = "none";
-    startBtn.style.display = "none";
+    hitBtn.style.display = "none"
+    standBtn.style.display = "none"
+    startBtn.style.display = "none"
     playerEl.textContent=''
     dealerEl.textContent=''
     messageEl.textContent=arg
@@ -74,11 +95,12 @@ async function reset(arg){
 
 async function initial_dealing() {
     moneyEl.style.display="none"
+    bankruptEl.style.display="none"
     let retrievedDataM=localStorage.getItem("Money")
     retrievedDataM=retrievedDataM-betMoney
     localStorage.setItem("Money",retrievedDataM)
     Wrate.style.display="none"
-    startBtn.style.display = "none";
+    startBtn.style.display = "none"
     loading("Dealing the facedown card")
     await delay(1800)
     dealerEl.textContent="Dealer's hand: "+"x" 
@@ -98,9 +120,9 @@ async function initial_dealing() {
     await delay(1800)
     let initialP="Your hand: "+playerCards[0]+"-"+playerCards[1]
     playerEl.textContent=initialP
-    hitBtn.style.display = "block";
-    standBtn.style.display = "block";
-    waiting.play();
+    hitBtn.style.display = "block"
+    standBtn.style.display = "block"
+    waiting.play()
     await delay(1200)
     messageEl.textContent="Hit or Stand"
     if (blackjackP===true){
@@ -116,8 +138,10 @@ async function initial_dealing() {
 
 async function hit() {
     messageEl.textContent="You chose hit"
+    hitBtn.style.display = "none";
+    standBtn.style.display = "none";
     await delay(1800)
-    serving.play();
+    serving.play()
     console.log(currentP)
  playerEl.textContent=playerEl.textContent+"-"+playerCards[currentP]
  let sum=0
@@ -143,6 +167,7 @@ else if (currentP===3 && sum<21) {
     return reset("GRATS !!! you win by having 4 cards"+" "+playerEl.textContent)}
     
 currentP=currentP+1
+showbtn()
 return currentP
 }
 
@@ -151,6 +176,8 @@ return currentP
 
 async function stand() {
     messageEl.textContent = "You chose to stand"
+    hitBtn.style.display = "none"
+    standBtn.style.display = "none"
     await delay(3000)
     messageEl.textContent = "It's time for the dealer to play"
     console.log(currentD)
@@ -168,7 +195,7 @@ async function stand() {
     }
   
     if (Dsum >= 17) {
-      messageEl.textContent = "Dealer chose to stand";
+      messageEl.textContent = "Dealer chose to stand"
       if (Dsum > Psum) {
         await delay(2000)
         loose()
@@ -197,26 +224,26 @@ async function stand() {
         currentD++
       }
       if (Dsum > 21) {
-        await delay(1000);
+        await delay(1000)
         win()
-        return reset("The dealer BUSTED... You win!\n" + dealerEl.textContent);
+        return reset("The dealer BUSTED... You win!\n" + dealerEl.textContent)
       } else if (currentD === 4) {
-        await delay(1000);
+        await delay(1000)
         loose()
-        return reset("The dealer played 4 times... You lose.\n" + dealerEl.textContent);
+        return reset("The dealer played 4 times... You lose.\n" + dealerEl.textContent)
       } else {
         if (Dsum > Psum) {
-          await delay(2000);
+          await delay(2000)
           loose()
-          return reset("The dealer pulled more than you. You lost.\n" + dealerEl.textContent + "\n" + playerEl.textContent);
+          return reset("The dealer pulled more than you. You lost.\n" + dealerEl.textContent + "\n" + playerEl.textContent)
         } else if (Dsum < Psum) {
-          await delay(2000);
+          await delay(2000)
           win()
-          return reset("Congratulations! You beat the dealer.\n" + dealerEl.textContent + "\n" + playerEl.textContent);
+          return reset("Congratulations! You beat the dealer.\n" + dealerEl.textContent + "\n" + playerEl.textContent)
         } else {
-          await delay(2000);
+          await delay(2000)
           win()
-          return reset("Push. (Push is a tie)\n" + dealerEl.textContent + "\n" + playerEl.textContent);
+          return reset("Push. (Push is a tie)\n" + dealerEl.textContent + "\n" + playerEl.textContent)
         }
       }
     }
@@ -234,8 +261,8 @@ function initPcounter(){
     localStorage.setItem("Plays", retrievedDataP)
   }}
 function win(){
-  let retrievedDataW = localStorage.getItem("Wins");
-  let retrievedDataP = localStorage.getItem("Plays");
+  let retrievedDataW = localStorage.getItem("Wins")
+  let retrievedDataP = localStorage.getItem("Plays")
   retrievedDataP++
   retrievedDataW++
   localStorage.setItem("Plays",retrievedDataP)
@@ -250,9 +277,20 @@ function loose(){
   retrievedDataP++
   localStorage.setItem("Plays",retrievedDataP)
 }
+function bankruptCheck(){
+  let retrievedDataB = localStorage.getItem("Bankruptcies")
+  let retrievedDataM=localStorage.getItem("Money")
+  if (retrievedDataM <= 0){
+    retrievedDataB++
+    localStorage.setItem("Bankruptcies", retrievedDataB)
+  }
+}
 function winrate(){
   let retrievedDataW = localStorage.getItem("Wins")
   let retrievedDataP = localStorage.getItem("Plays")
   let filler=(retrievedDataW/retrievedDataP)*100 
   return Math.round(filler)+"%"
 }
+function showbtn(){
+hitBtn.style.display = "block"
+standBtn.style.display = "block" }
