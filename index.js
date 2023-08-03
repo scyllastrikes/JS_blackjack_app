@@ -1,18 +1,35 @@
-let message = ""
-let messageEl = document.getElementById("message-el")
-let dealerEl = document.getElementById("dealer-el")
-let playerEl = document.getElementById("player-el")
-let startBtn= document.getElementById("start-btn")
-let hitBtn= document.getElementById("hit-btn")
-let standBtn= document.getElementById("stand-btn")
-let restartBtn= document.getElementById("restart-btn")
-const serving = new Audio("serve.mp3");
-const waiting = new Audio("waiting.mp3");
+const messageEl = document.getElementById("message-el")
+const dealerEl = document.getElementById("dealer-el")
+const playerEl = document.getElementById("player-el")
+const startBtn= document.getElementById("start-btn")
+const hitBtn= document.getElementById("hit-btn")
+const standBtn= document.getElementById("stand-btn")
+const restartBtn= document.getElementById("restart-btn")
+const moneyEl = document.getElementById("money-el")
+const serving = new Audio("serve.mp3")
+const waiting = new Audio("waiting.mp3")
+const Wrate =document.getElementById("winrate")
+function initMcounter(){
+  let retrievedDataM = localStorage.getItem("Money")
+  if (retrievedDataM == null ||retrievedDataM<=0) {
+    retrievedDataM=500
+    x=retrievedDataM
+    localStorage.setItem("Money", retrievedDataM)
+    return x
+   }
+  else {
+    x=retrievedDataM
+    return x
+  }
+}
+
 initPcounter()
 initWcounter()
-let Wrate= document.getElementById("winrate")
-Wrate.textContent="Winrate:"+winrate()
+betMoney=500
+Wrate.textContent="Winrate: "+winrate()
+moneyEl.textContent="Current money: "+initMcounter()
 Wrate.style.display="block"
+moneyEl.style.display="block"
 restartBtn.style.display = "none";
 hitBtn.style.display = "none";
 standBtn.style.display = "none";
@@ -56,6 +73,10 @@ async function reset(arg){
 }
 
 async function initial_dealing() {
+    moneyEl.style.display="none"
+    let retrievedDataM=localStorage.getItem("Money")
+    retrievedDataM=retrievedDataM-betMoney
+    localStorage.setItem("Money",retrievedDataM)
     Wrate.style.display="none"
     startBtn.style.display = "none";
     loading("Dealing the facedown card")
@@ -219,6 +240,10 @@ function win(){
   retrievedDataW++
   localStorage.setItem("Plays",retrievedDataP)
   localStorage.setItem("Wins",retrievedDataW)
+  let retrievedDataM=localStorage.getItem("Money")
+  betMoney=betMoney*2
+  retrievedDataM=parseInt(retrievedDataM)+betMoney
+  localStorage.setItem("Money", retrievedDataM)
 }
 function loose(){
   let retrievedDataP=localStorage.getItem("Plays")

@@ -1,0 +1,26 @@
+
+  // Function to calculate the maximum value for the range input
+  function calculateMaxMoney() {
+    // Your logic to calculate the maximum value goes here
+    // For example, you can set a variable based on some condition or calculation
+           var maxmoney = 100; // Replace this with your actual calculated value
+    return maxmoney;
+  }
+
+  // Function to update the max attribute of the range input
+  function updateMaxAttribute() {
+    var rangeInput = document.getElementById('money');
+    rangeInput.setAttribute('max', calculateMaxMoney());
+  }
+
+  // Call the updateMaxAttribute function initially to set the max attribute
+  updateMaxAttribute();
+
+  // If your max value depends on user interactions or changes, you can call the function whenever needed.
+  // For example, when a button is clicked or an input changes:
+  document.getElementById('someButton').addEventListener('click', updateMaxAttribute);
+  // or
+  document.getElementById('someInput').addEventListener('input', updateMaxAttribute);
+
+
+//<input id="money" type="range" name="money_input" min="1" step="1">
